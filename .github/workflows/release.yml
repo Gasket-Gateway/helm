@@ -75,11 +75,11 @@ jobs:
           # OCI registry paths must be lowercase
           owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
 
-          # changed_charts is a comma-separated list e.g. "gasket,other"
+          # changed_charts is a comma-separated list of paths e.g. "charts/gasket,charts/other"
           IFS=',' read -ra charts <<< "${{ needs.release-github-pages.outputs.changed_charts }}"
 
-          for chart_name in "${charts[@]}"; do
-            chart_dir="charts/${chart_name}"
+          for chart_dir in "${charts[@]}"; do
+            chart_name=$(basename "$chart_dir")
             chart_version=$(helm show chart "$chart_dir" | grep '^version:' | awk '{print $2}')
 
             echo "Packaging $chart_name @ $chart_version"
