@@ -19,6 +19,8 @@ jobs:
   release-github-pages:
     name: Release to GitHub Pages
     runs-on: ubuntu-latest
+    outputs:
+      changed_charts: ${{ steps.chart-releaser.outputs.changed_charts }}
 
     steps:
       - name: Checkout
@@ -35,20 +37,24 @@ jobs:
         uses: azure/setup-helm@v4
 
       - name: Run chart-releaser
+        id: chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
         with:
           charts_dir: charts
           config: cr.yaml
+          skip_existing: true  # no-op if version already released
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
   # ──────────────────────────────────────────────────────────────────────────
   # Job 2: Push OCI charts to GitHub Container Registry (ghcr.io)
+  # Only runs when chart-releaser actually released at least one chart.
   # ──────────────────────────────────────────────────────────────────────────
   release-oci:
     name: Publish OCI Charts to ghcr.io
     runs-on: ubuntu-latest
+    needs: release-github-pages
+    if: needs.release-github-pages.outputs.changed_charts != ''
 
     steps:
       - name: Checkout
@@ -64,13 +70,16 @@ jobs:
                 --username "${{ github.actor }}" \
                 --password-stdin
 
-      - name: Package and push each chart
+      - name: Package and push changed charts
         run: |
           # OCI registry paths must be lowercase
           owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
 
-          for chart_dir in charts/*/; do
-            chart_name=$(basename "$chart_dir")
+          # changed_charts is a comma-separated list e.g. "gasket,other"
+          IFS=',' read -ra charts <<< "${{ needs.release-github-pages.outputs.changed_charts }}"
+
+          for chart_name in "${charts[@]}"; do
+            chart_dir="charts/${chart_name}"
             chart_version=$(helm show chart "$chart_dir" | grep '^version:' | awk '{print $2}')
 
             echo "Packaging $chart_name @ $chart_version"
