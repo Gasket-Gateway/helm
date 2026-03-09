@@ -1,0 +1,36 @@
+# Default values for gasket.
+# This chart is currently a placeholder — no resources are deployed.
+# Future versions will populate these values.
+
+# -- Global settings
+global: {}
+
+# -- Replica count (placeholder)
+replicaCount: 1
+
+# -- Image settings (placeholder)
+image:
+  repository: ghcr.io/gasket-gateway/gasket
+  pullPolicy: IfNotPresent
+  tag: ""
+
+# -- Image pull secrets (placeholder)
+imagePullSecrets: []
+
+# -- Override chart name
+nameOverride: ""
+fullnameOverride: ""
+
+# -- Service account (placeholder)
+serviceAccount:
+  create: false
+  name: ""
+
+# -- Service settings (placeholder)
+service:
+  type: ClusterIP
+  port: 80
+
+# -- Ingress settings (placeholder)
+ingress:
+  enabled: false
