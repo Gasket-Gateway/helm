@@ -1,0 +1,25 @@
+apiVersion: v2
+name: gasket
+description: An API gateway for OpenAI-compliant inference backends with enterprise capabilities including SSO, organisational policy, auditing, monitoring and quotas.
+type: application
+version: 0.2.0
+appVersion: "0.2.0"
+keywords:
+  - ai
+  - api-gateway
+  - openai
+  - llm
+  - proxy
+  - oidc
+  - sso
+  - quota
+  - audit
+home: https://Gasket-Gateway.github.io/helm
+sources:
+  - https://github.com/Gasket-Gateway/gasket
+  - https://github.com/Gasket-Gateway/helm
+maintainers:
+  - name: Gasket Gateway Project
+    url: https://github.com/Gasket-Gateway
+annotations:
+  category: AI/ML
