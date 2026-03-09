@@ -1,0 +1,5 @@
+Thank you for installing {{ .Chart.Name }} v{{ .Chart.Version }}.
+
+This chart is currently a placeholder. No resources have been deployed.
+
+Future releases will include the full Gasket Gateway deployment.
