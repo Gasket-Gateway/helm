@@ -1,0 +1,83 @@
+name: Release Helm Charts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write  # needed for chart-releaser to push to gh-pages branch
+  packages: write  # needed for OCI push to ghcr.io
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Job 1: Publish to GitHub Pages via chart-releaser (classic index.yaml repo)
+  # ──────────────────────────────────────────────────────────────────────────
+  release-github-pages:
+    name: Release to GitHub Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # chart-releaser needs full history
+
+      - name: Configure Git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts
+          config: cr.yaml
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Job 2: Push OCI charts to GitHub Container Registry (ghcr.io)
+  # ──────────────────────────────────────────────────────────────────────────
+  release-oci:
+    name: Publish OCI Charts to ghcr.io
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | helm registry login ghcr.io \
+                --username "${{ github.actor }}" \
+                --password-stdin
+
+      - name: Package and push each chart
+        run: |
+          # OCI registry paths must be lowercase
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+
+          for chart_dir in charts/*/; do
+            chart_name=$(basename "$chart_dir")
+            chart_version=$(helm show chart "$chart_dir" | grep '^version:' | awk '{print $2}')
+
+            echo "Packaging $chart_name @ $chart_version"
+            helm package "$chart_dir" --destination /tmp/helm-pkg
+
+            echo "Pushing $chart_name to OCI registry"
+            helm push \
+              "/tmp/helm-pkg/${chart_name}-${chart_version}.tgz" \
+              "oci://ghcr.io/${owner}"
+          done
