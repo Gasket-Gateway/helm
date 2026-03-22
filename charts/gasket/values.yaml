@@ -1,36 +1,145 @@
 # Default values for gasket.
-# This chart is currently a placeholder — no resources are deployed.
-# Future versions will populate these values.
 
-# -- Global settings
-global: {}
-
-# -- Replica count (placeholder)
+# -- Number of replicas
 replicaCount: 1
 
-# -- Image settings (placeholder)
+# -- Image settings
 image:
   repository: ghcr.io/gasket-gateway/gasket
   pullPolicy: IfNotPresent
+  # -- Overrides the image tag (default is the chart appVersion)
   tag: ""
 
-# -- Image pull secrets (placeholder)
+# -- Image pull secrets
 imagePullSecrets: []
 
 # -- Override chart name
 nameOverride: ""
 fullnameOverride: ""
 
-# -- Service account (placeholder)
+# -- Service account configuration
 serviceAccount:
-  create: false
+  # -- Create a ServiceAccount
+  create: true
+  # -- Annotations for the ServiceAccount
+  annotations: {}
+  # -- Name override (defaults to fullname)
   name: ""
+  # -- Automount the service account token
+  automount: false
 
-# -- Service settings (placeholder)
+# -- Annotations to add to the pod
+podAnnotations: {}
+
+# -- Labels to add to the pod
+podLabels: {}
+
+# -- Pod security context
+podSecurityContext: {}
+  # fsGroup: 1000
+
+# -- Container security context
+securityContext: {}
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# -- Service configuration
 service:
   type: ClusterIP
+  # -- HTTP port (maps to container port 5000)
   port: 80
+  # -- Metrics port (maps to container port 9050)
+  metricsPort: 9050
 
-# -- Ingress settings (placeholder)
+# -- Ingress configuration
 ingress:
   enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: gasket.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: gasket-tls
+  #    hosts:
+  #      - gasket.example.com
+
+# -- Container resource requests and limits
+resources: {}
+  # limits:
+  #   cpu: 500m
+  #   memory: 256Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- Horizontal Pod Autoscaler
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# -- Extra environment variables for the container
+extraEnv: []
+  # - name: GASKET_INSTANCE
+  #   value: "1"
+
+# -- Extra volume mounts for the container
+extraVolumeMounts: []
+
+# -- Extra volumes for the pod
+extraVolumes: []
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+# -- Gasket application configuration
+# This is rendered as config.yaml and mounted at /etc/gasket/config.yaml
+gasketConfig: |
+  server:
+    host: "0.0.0.0"
+    port: 5000
+    metrics_port: 9050
+    debug: false
+
+  default_theme: "dark"
+
+  banners: []
+
+  oidc:
+    provider_url: ""
+    client_id: ""
+    client_secret: ""
+    skip_tls_verify: false
+    session_timeout_hours: 8
+    redirect_url: ""
+    logout_url: ""
+    groups:
+      user_access: ""
+      admin_access: ""
+
+  database:
+    host: "postgres"
+    port: 5432
+    name: "gasket"
+    user: "gasket"
+    password: ""
+
+  opensearch:
+    url: ""
+    skip_tls_verify: false
+
+  backend_profiles: []

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gasket.fullname" . }}-config
+  labels:
+    {{- include "gasket.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    {{- .Values.gasketConfig | nindent 4 }}
