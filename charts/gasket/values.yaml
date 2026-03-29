@@ -142,4 +142,19 @@ gasketConfig: |
     url: ""
     skip_tls_verify: false
 
+  openai_backends: []
+  #  - name: "my-backend"
+  #    base_url: "https://api.example.com/v1"
+  #    api_key: ""
+  #    skip_tls_verify: false
+
   backend_profiles: []
+  #  - name: "standard-tier"
+  #    description: "Standard access profile"
+  #    oidc_groups:
+  #      - "gasket-users"
+  #    backends:
+  #      - "my-backend"
+  #    metadata_audit: true
+  #    content_audit: false
+  #    max_keys_per_user: 5
