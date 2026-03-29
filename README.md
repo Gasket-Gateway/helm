@@ -20,14 +20,14 @@ helm install gasket gasket-gateway/gasket
 Charts are also published to the GitHub Container Registry:
 
 ```bash
-helm install gasket oci://ghcr.io/gasket-gateway/gasket --version 0.3.0
+helm install gasket oci://ghcr.io/gasket-gateway/charts/gasket --version 0.1.0
 ```
 
 ## Charts
 
 | Chart                     | Description                | Version |
 | ------------------------- | -------------------------- | ------- |
-| [gasket](./charts/gasket) | Gasket Gateway application | 0.3.0   |
+| [gasket](./charts/gasket) | Gasket Gateway application | 0.1.0   |
 
 ## Development
 
@@ -49,4 +49,4 @@ Pushing a chart version bump to `main` will:
 
 1. Create a GitHub Release with the packaged `.tgz`
 2. Update the `gh-pages` branch `index.yaml` (classic Helm repo)
-3. Push the OCI chart to `ghcr.io/gasket-gateway/<chart>`
+3. Push the OCI chart to `ghcr.io/gasket-gateway/charts/<chart>`

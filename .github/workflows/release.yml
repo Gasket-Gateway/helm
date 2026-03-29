@@ -88,5 +88,5 @@ jobs:
             echo "Pushing $chart_name to OCI registry"
             helm push \
               "/tmp/helm-pkg/${chart_name}-${chart_version}.tgz" \
-              "oci://ghcr.io/${owner}"
+              "oci://ghcr.io/${owner}/charts"
           done
