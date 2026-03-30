@@ -148,6 +148,12 @@ gasketConfig: |
   #    api_key: ""
   #    skip_tls_verify: false
 
+  policies: []
+  #  - name: "acceptable-use"
+  #    description: "Standard acceptable use policy"
+  #    content: |
+  #      You must use this service responsibly.
+
   backend_profiles: []
   #  - name: "standard-tier"
   #    description: "Standard access profile"
@@ -155,6 +161,8 @@ gasketConfig: |
   #      - "gasket-users"
   #    backends:
   #      - "my-backend"
+  #    policy_names:
+  #      - "acceptable-use"
   #    metadata_audit: true
   #    content_audit: false
   #    max_keys_per_user: 5
