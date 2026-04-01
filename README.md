@@ -20,14 +20,14 @@ helm install gasket gasket-gateway/gasket
 Charts are also published to the GitHub Container Registry:
 
 ```bash
-helm install gasket oci://ghcr.io/gasket-gateway/charts/gasket --version 0.1.5
+helm install gasket oci://ghcr.io/gasket-gateway/charts/gasket --version 0.1.6
 ```
 
 ## Charts
 
 | Chart                     | Description                | Version |
 | ------------------------- | -------------------------- | ------- |
-| [gasket](./charts/gasket) | Gasket Gateway application | 0.1.5   |
+| [gasket](./charts/gasket) | Gasket Gateway application | 0.1.6   |
 
 ## Configuration
 
