@@ -4,6 +4,37 @@ entries:
   - annotations:
       category: AI/ML
     apiVersion: v2
+    appVersion: 0.1.7
+    created: "2026-04-19T04:54:40.339713234Z"
+    description: An API gateway for OpenAI-compliant inference backends with enterprise
+      capabilities including SSO, organisational policy, auditing, monitoring and
+      quotas.
+    digest: 21f5b6e0095137b857ad559c1308dc72582e91a684db6cc55994c10aed071771
+    home: https://Gasket-Gateway.github.io/helm
+    keywords:
+    - ai
+    - api-gateway
+    - openai
+    - llm
+    - proxy
+    - oidc
+    - sso
+    - quota
+    - audit
+    maintainers:
+    - name: Gasket Gateway Project
+      url: https://github.com/Gasket-Gateway
+    name: gasket
+    sources:
+    - https://github.com/Gasket-Gateway/gasket
+    - https://github.com/Gasket-Gateway/helm
+    type: application
+    urls:
+    - https://github.com/Gasket-Gateway/helm/releases/download/gasket-0.1.7/gasket-0.1.7.tgz
+    version: 0.1.7
+  - annotations:
+      category: AI/ML
+    apiVersion: v2
     appVersion: 0.1.6
     created: "2026-04-01T21:07:25.398461324Z"
     description: An API gateway for OpenAI-compliant inference backends with enterprise
@@ -218,4 +249,4 @@ entries:
     urls:
     - https://github.com/Gasket-Gateway/helm/releases/download/gasket-0.1.0/gasket-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-01T21:07:25.398512509Z"
+generated: "2026-04-19T04:54:40.3397646Z"
