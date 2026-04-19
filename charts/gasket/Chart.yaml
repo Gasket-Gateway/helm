@@ -2,8 +2,8 @@ apiVersion: v2
 name: gasket
 description: An API gateway for OpenAI-compliant inference backends with enterprise capabilities including SSO, organisational policy, auditing, monitoring and quotas.
 type: application
-version: 0.1.6
-appVersion: "0.1.6"
+version: 0.1.7
+appVersion: "0.1.7"
 keywords:
   - ai
   - api-gateway
